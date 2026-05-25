@@ -285,7 +285,189 @@
   .wc-reps.warmup-reps { color: #fb923c; }
   .wc-reps.cooldown-reps { color: #a78bfa; }
 
-  /* TRACKER CARD */
+  /* WEIGHT LOG BUTTON */
+  .ex-row {
+    display: grid;
+    grid-template-columns: 1fr 44px 80px;
+    gap: 6px;
+    padding: 8px 0;
+    border-bottom: 1px solid #1a1a1a;
+    align-items: start;
+  }
+  .ex-row-inner { display: flex; flex-direction: column; gap: 4px; }
+  .ex-actions { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
+  .ex-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .ex-btn-weight {
+    background: var(--accent)22;
+    color: var(--accent);
+    border: 1px solid var(--accent)44;
+  }
+  .ex-btn-weight.logged {
+    background: var(--accent);
+    color: #000;
+  }
+  .ex-btn-1rm {
+    background: #38bdf822;
+    color: var(--gym);
+    border: 1px solid #38bdf844;
+  }
+  .ex-btn-swap {
+    background: #fb923c22;
+    color: var(--home);
+    border: 1px solid #fb923c44;
+  }
+  .ex-weight-display {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+  }
+  .ex-prev-weight {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+  }
+
+  /* WEIGHT / 1RM MODAL */
+  .modal2-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 300;
+    align-items: flex-end;
+    backdrop-filter: blur(4px);
+  }
+  .modal2-overlay.open { display: flex; }
+  .modal2 {
+    background: #161616;
+    border-radius: 20px 20px 0 0;
+    border: 1px solid var(--border);
+    width: 100%;
+    padding: 20px 20px calc(var(--safe-bottom) + 20px);
+    animation: slideUp 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .modal2-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .modal2-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .modal2-input-row {
+    display: flex; gap: 10px; align-items: center; margin-bottom: 14px;
+  }
+  .modal2-input {
+    flex: 1;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  .modal2-input:focus { border-color: var(--accent); }
+  .modal2-unit {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    min-width: 28px;
+  }
+  .modal2-result {
+    background: var(--accent)11;
+    border: 1px solid var(--accent)33;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    display: none;
+  }
+  .modal2-result.show { display: block; }
+  .modal2-result-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .modal2-result-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  .modal2-result-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .modal2-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    border: none;
+    border-radius: 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    color: #000;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  .modal2-cancel {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    margin-top: 4px;
+  }
+
+  /* SWAP MODAL */
+  .swap-opt {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .swap-opt:active { border-color: var(--home); background: #fb923c11; }
+  .swap-opt-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .swap-opt-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
   .tracker-card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -701,6 +883,62 @@
   </div>
 </div>
 
+<!-- WEIGHT LOG MODAL -->
+<div class="modal2-overlay" id="weightModal">
+  <div class="modal2">
+    <div class="modal-handle"></div>
+    <div class="modal2-title" id="weightModalTitle">Log Weight</div>
+    <div class="modal2-sub" id="weightModalSub"></div>
+    <div class="modal2-input-row">
+      <input class="modal2-input" id="weightInput" type="number" placeholder="135" inputmode="decimal" min="0" max="999" step="2.5">
+      <span class="modal2-unit">lbs</span>
+    </div>
+    <div class="modal2-result" id="weightPrevBox">
+      <div class="modal2-result-label">Last Week</div>
+      <div class="modal2-result-val" id="weightPrevVal">—</div>
+      <div class="modal2-result-sub" id="weightPrevDelta"></div>
+    </div>
+    <button class="modal2-btn" onclick="saveWeight()">SAVE</button>
+    <button class="modal2-cancel" onclick="closeWeightModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- 1RM MODAL -->
+<div class="modal2-overlay" id="ormModal">
+  <div class="modal2">
+    <div class="modal-handle"></div>
+    <div class="modal2-title" id="ormModalTitle">Estimate 1RM</div>
+    <div class="modal2-sub" id="ormModalSub">Epley formula: weight × (1 + reps/30)</div>
+    <div style="display:flex; gap:10px; margin-bottom:14px;">
+      <div style="flex:1">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Weight (lbs)</div>
+        <input class="modal2-input" id="ormWeight" type="number" placeholder="135" inputmode="decimal" min="0" max="999" step="2.5" oninput="calc1RM()">
+      </div>
+      <div style="flex:1">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Reps</div>
+        <input class="modal2-input" id="ormReps" type="number" placeholder="8" inputmode="numeric" min="1" max="30" oninput="calc1RM()">
+      </div>
+    </div>
+    <div class="modal2-result" id="ormResult">
+      <div class="modal2-result-label">Estimated 1RM</div>
+      <div class="modal2-result-val" id="ormVal">—</div>
+      <div class="modal2-result-sub" id="ormBreakdown"></div>
+    </div>
+    <button class="modal2-cancel" onclick="closeOrmModal()" style="margin-top:0;">Close</button>
+  </div>
+</div>
+
+<!-- SWAP MODAL -->
+<div class="modal2-overlay" id="swapModal">
+  <div class="modal2">
+    <div class="modal-handle"></div>
+    <div class="modal2-title" id="swapModalTitle">Swap Exercise</div>
+    <div class="modal2-sub" id="swapModalSub">Tap an alternative to replace it for this session</div>
+    <div id="swapOpts"></div>
+    <button class="modal2-cancel" onclick="closeSwapModal()">Keep Original</button>
+  </div>
+</div>
+
 <script>
 // ─── DATA ──────────────────────────────────────────────────────────────────
 const fullWeek = [
@@ -935,7 +1173,200 @@ const homeQuick = [
     ]},
 ];
 
-// ─── STATE ─────────────────────────────────────────────────────────────────
+// ─── HELPERS ────────────────────────────────────────────────────────────────
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// Event delegation for exercise buttons (handles weight/1RM/swap clicks safely)
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  e.stopPropagation();
+  const action = btn.dataset.action;
+  const exName = btn.dataset.ex;
+  if (action === 'weight') {
+    openWeightModal(exName, btn.dataset.card);
+  } else if (action === 'orm') {
+    openOrmModal(exName);
+  } else if (action === 'swap') {
+    openSwapModal(btn.dataset.card, parseInt(btn.dataset.ei), exName, btn.dataset.page, parseInt(btn.dataset.wi));
+  }
+});
+
+// ─── EXERCISE SWAPS ────────────────────────────────────────────────────────
+const swaps = {
+  "Barbell Bench Press":    [{n:"DB Bench Press",       note:"Same movement, unilateral stability"},{n:"Push-Up (weighted)",   note:"Add plate on back for resistance"},{n:"Machine Chest Press",  note:"Good for isolating, less stabilizer demand"}],
+  "Dumbbell Incline Press": [{n:"Incline Barbell Press", note:"More stable, can go heavier"},{n:"Cable Incline Fly",     note:"Constant tension on upper chest"},{n:"Incline Push-Up",       note:"BW version, easy to scale"}],
+  "Cable Lateral Raises":   [{n:"DB Lateral Raises",    note:"Classic dumbbell version"},{n:"Band Lateral Raises",   note:"Good at home, constant tension"},{n:"Machine Lateral Raise", note:"Isolates well, easier to control"}],
+  "Overhead Press (DB/BB)": [{n:"Arnold Press",          note:"More shoulder rotation, fuller range"},{n:"Seated DB Press",       note:"More stable base"},{n:"Landmine Press",        note:"Easier on shoulders, joint-friendly"}],
+  "Tricep Rope Pushdowns":  [{n:"Overhead Tricep Extension", note:"Long head emphasis"},{n:"Skull Crushers (EZ bar)", note:"Heavy tricep mass builder"},{n:"Diamond Push-Ups",      note:"BW option, no equipment"}],
+  "Barbell / DB Rows":      [{n:"T-Bar Row",             note:"Similar movement, great back builder"},{n:"Chest-Supported Row",   note:"Removes lower back stress"},{n:"Cable Row (wide grip)", note:"Constant tension throughout"}],
+  "Lat Pulldowns":          [{n:"Pull-Ups / Assisted",   note:"Best lat builder if you can do them"},{n:"Straight-Arm Pulldown", note:"Great lat isolation"},{n:"Single-Arm Cable Row",  note:"Allows full range unilaterally"}],
+  "Seated Cable Row":       [{n:"DB Bent Over Row",      note:"Free weight version, more core demand"},{n:"Machine Row",           note:"Easy to load heavy safely"},{n:"Resistance Band Row",  note:"Home-friendly option"}],
+  "Face Pulls":             [{n:"Band Pull-Aparts",      note:"Great rear delt with resistance band"},{n:"Reverse Pec Deck",      note:"Machine version, easy to isolate"},{n:"DB Reverse Fly",        note:"Dumbbell version, good with bench"}],
+  "DB or BB Curls":         [{n:"Preacher Curls",        note:"Removes momentum, strict form"},{n:"Cable Curls",           note:"Constant tension throughout"},{n:"Concentration Curls",   note:"Peak contraction focus"}],
+  "Barbell Squats":         [{n:"Goblet Squat",          note:"Great for mobility, DB at chest"},{n:"Hack Squat",            note:"Machine version, quad emphasis"},{n:"Bulgarian Split Squat", note:"Unilateral, brutal but effective"}],
+  "Romanian Deadlift":      [{n:"Nordic Hamstring Curl", note:"Bodyweight, excellent eccentric"},{n:"Good Mornings",         note:"Hip hinge, similar muscles"},{n:"Swiss Ball Hamstring Curl", note:"Home-friendly, no equipment needed"}],
+  "Leg Press":              [{n:"Hack Squat Machine",    note:"Similar quad emphasis"},{n:"Step-Ups (DB)",          note:"Unilateral, great for balance"},{n:"Wall Sit",               note:"Isometric, bodyweight option"}],
+  "Walking Lunges":         [{n:"Reverse Lunges",        note:"Easier on knees, same muscles"},{n:"Bulgarian Split Squat", note:"More challenging unilateral option"},{n:"Step-Ups",              note:"Same muscle groups, lower knee stress"}],
+  "Calf Raises":            [{n:"Seated Calf Raise",     note:"Targets soleus more than standing"},{n:"Single-Leg Calf Raise", note:"More challenging bodyweight option"},{n:"Jump Rope",             note:"Cardio + calf endurance combo"}],
+  "DB Bench Press":         [{n:"Barbell Bench Press",   note:"More stable, can load heavier"},{n:"Push-Up",               note:"Bodyweight fallback"},{n:"Machine Chest Press",  note:"Good isolation option"}],
+  "DB Romanian Deadlift":   [{n:"Romanian Deadlift (BB)", note:"Barbell version, more loading"},{n:"Good Mornings",         note:"Similar hip hinge pattern"},{n:"Nordic Hamstring Curl", note:"Eccentric hamstring focus"}],
+  "DB Incline Press":       [{n:"Incline Push-Up",       note:"Bodyweight version"},{n:"Incline BB Press",       note:"Heavier loading option"},{n:"Cable Incline Fly",     note:"Constant tension"}],
+  "DB Bent Over Row":       [{n:"Chest-Supported DB Row",note:"Removes lower back fatigue"},{n:"Single-Arm Cable Row",  note:"Constant tension"},{n:"Resistance Band Row",   note:"Home option"}],
+  "DB Goblet Squat":        [{n:"Bodyweight Squat",      note:"No equipment needed"},{n:"Barbell Back Squat",    note:"Heavier loading if at gym"},{n:"Wall Sit",              note:"Isometric alternative"}],
+  "DB Reverse Lunges":      [{n:"Walking Lunges",        note:"More dynamic, more glutes"},{n:"Bulgarian Split Squat", note:"More challenging"},{n:"Step-Ups",              note:"Lower knee stress option"}],
+};
+
+// Active swaps for this session (key = cardKey-exIndex, value = swapped exercise)
+let sessionSwaps = {};
+let swapContext = null; // {cardKey, exIndex, exName, pageId, workoutIndex}
+let weightContext = null; // {exName, cardKey}
+let ormContext = null;
+
+// ─── WEIGHT LOGGING ────────────────────────────────────────────────────────
+function openWeightModal(exName, cardKey) {
+  weightContext = {exName, cardKey};
+  const wk = getWeekKey();
+  const prevWk = getPrevWeekKey();
+  const currVal = state[`wt-${wk}-${exName}`];
+  const prevVal = state[`wt-${prevWk}-${exName}`];
+
+  document.getElementById('weightModalTitle').textContent = 'Log Weight';
+  document.getElementById('weightModalSub').textContent = exName;
+  document.getElementById('weightInput').value = currVal || '';
+
+  const prevBox = document.getElementById('weightPrevBox');
+  if (prevVal) {
+    prevBox.classList.add('show');
+    document.getElementById('weightPrevVal').textContent = prevVal + ' lbs';
+    if (currVal) {
+      const delta = currVal - prevVal;
+      document.getElementById('weightPrevDelta').textContent = delta >= 0 ? `+${delta} lbs from last week` : `${delta} lbs from last week`;
+    } else {
+      document.getElementById('weightPrevDelta').textContent = 'Last week\'s weight';
+    }
+  } else {
+    prevBox.classList.remove('show');
+  }
+  document.getElementById('weightModal').classList.add('open');
+  setTimeout(() => document.getElementById('weightInput').focus(), 300);
+}
+
+function saveWeight() {
+  if (!weightContext) { closeWeightModal(); return; }
+  const val = parseFloat(document.getElementById('weightInput').value);
+  if (!isNaN(val) && val > 0) {
+    const wk = getWeekKey();
+    state[`wt-${wk}-${weightContext.exName}`] = val;
+    saveState(state);
+  }
+  closeWeightModal();
+  // Re-render to show updated weight
+  const pageId = weightContext.cardKey.split('-')[0];
+  if (pageId === 'full') renderWorkouts(fullWeek, 'full');
+  if (pageId === 'busy') renderWorkouts(busyWeek, 'busy');
+  if (pageId === 'home') renderWorkouts(homeQuick, 'home');
+}
+
+function closeWeightModal() {
+  document.getElementById('weightModal').classList.remove('open');
+  weightContext = null;
+}
+
+function getPrevWeekKey() {
+  const now = new Date();
+  now.setDate(now.getDate() - 7);
+  return getWeekKeyFor(now);
+}
+
+// ─── 1RM ────────────────────────────────────────────────────────────────────
+function openOrmModal(exName) {
+  ormContext = exName;
+  document.getElementById('ormModalTitle').textContent = '1RM — ' + exName;
+  document.getElementById('ormWeight').value = '';
+  document.getElementById('ormReps').value = '';
+  document.getElementById('ormResult').classList.remove('show');
+  // Pre-fill with this week's logged weight if available
+  const wk = getWeekKey();
+  const logged = state[`wt-${wk}-${exName}`];
+  if (logged) document.getElementById('ormWeight').value = logged;
+  document.getElementById('ormModal').classList.add('open');
+}
+
+function calc1RM() {
+  const w = parseFloat(document.getElementById('ormWeight').value);
+  const r = parseFloat(document.getElementById('ormReps').value);
+  const res = document.getElementById('ormResult');
+  if (!isNaN(w) && !isNaN(r) && w > 0 && r > 0) {
+    const orm = Math.round(w * (1 + r / 30));
+    document.getElementById('ormVal').textContent = orm + ' lbs';
+    const pcts = [90,85,80,75,70].map(p => `${p}% = ${Math.round(orm * p/100)} lbs`).join(' · ');
+    document.getElementById('ormBreakdown').textContent = pcts;
+    res.classList.add('show');
+  } else {
+    res.classList.remove('show');
+  }
+}
+
+function closeOrmModal() {
+  document.getElementById('ormModal').classList.remove('open');
+  ormContext = null;
+}
+
+// ─── SWAP ────────────────────────────────────────────────────────────────────
+function openSwapModal(cardKey, exIndex, exName, pageId, workoutIndex) {
+  swapContext = {cardKey, exIndex, exName, pageId, workoutIndex};
+  const alts = swaps[exName] || [];
+  document.getElementById('swapModalTitle').textContent = 'Swap Exercise';
+  document.getElementById('swapModalSub').textContent = `Replacing: ${exName}`;
+  const opts = document.getElementById('swapOpts');
+  opts.innerHTML = '';
+  if (alts.length === 0) {
+    opts.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">No alternatives available for this exercise.</div>';
+  } else {
+    alts.forEach(alt => {
+      const el = document.createElement('div');
+      el.className = 'swap-opt';
+      el.innerHTML = `<div class="swap-opt-name">${alt.n}</div><div class="swap-opt-note">${alt.note}</div>`;
+      el.onclick = () => applySwap(alt.n);
+      opts.appendChild(el);
+    });
+  }
+  document.getElementById('swapModal').classList.add('open');
+}
+
+function applySwap(newExName) {
+  if (!swapContext) return;
+  const {cardKey, exIndex, pageId} = swapContext;
+  sessionSwaps[`${cardKey}-${exIndex}`] = newExName;
+  closeSwapModal();
+  if (pageId === 'full') renderWorkouts(fullWeek, 'full');
+  if (pageId === 'busy') renderWorkouts(busyWeek, 'busy');
+  if (pageId === 'home') renderWorkouts(homeQuick, 'home');
+}
+
+function closeSwapModal() {
+  document.getElementById('swapModal').classList.remove('open');
+  swapContext = null;
+}
+
+// Close modals on overlay tap
+['weightModal','ormModal','swapModal'].forEach(id => {
+  document.getElementById(id).addEventListener('click', function(e) {
+    if (e.target === this) {
+      if (id === 'weightModal') closeWeightModal();
+      if (id === 'ormModal') closeOrmModal();
+      if (id === 'swapModal') closeSwapModal();
+    }
+  });
+});
 const DAYS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 const TOTAL_SESSIONS = 5;
 
@@ -1038,13 +1469,33 @@ function renderWorkouts(list, pageId) {
         <div class="ex-header">
           <span>Exercise</span><span>Sets</span><span>Reps / Time</span>
         </div>
-        ${w.ex.map(e => `
+        ${w.ex.map((e, ei) => {
+          const swapKey = `${key}-${ei}`;
+          const swappedName = sessionSwaps[swapKey] || e.n;
+          const wk2 = getWeekKey();
+          const prevWk = getPrevWeekKey();
+          const currWt = state[`wt-${wk2}-${swappedName}`];
+          const prevWt = state[`wt-${prevWk}-${swappedName}`];
+          const hasSwaps = !!(swaps[swappedName] && swaps[swappedName].length);
+          const isStrength = w.type !== 'cardio' && w.type !== 'rest' && e.s !== '—' && e.s !== '1';
+          const escName = escapeHtml(swappedName);
+          return `
           <div class="ex-row">
-            <div><div class="ex-name">${e.n}</div>${e.note ? `<div class="ex-note">${e.note}</div>` : ''}</div>
+            <div class="ex-row-inner">
+              <div class="ex-name">${escName}${sessionSwaps[swapKey] ? ' <span style="font-size:9px;color:var(--home);font-family:monospace;">(swapped)</span>' : ''}</div>
+              ${e.note ? `<div class="ex-note">${escapeHtml(e.note)}</div>` : ''}
+              ${prevWt && !currWt ? `<div class="ex-prev-weight">Last week: ${prevWt} lbs</div>` : ''}
+              ${currWt ? `<div class="ex-weight-display">✓ ${currWt} lbs${prevWt ? (currWt > prevWt ? ` <span style="color:#4ade80">▲${currWt-prevWt}</span>` : currWt < prevWt ? ` <span style="color:#f87171">▼${prevWt-currWt}</span>` : ' =') : ''}</div>` : ''}
+              <div class="ex-actions">
+                ${isStrength ? `<button class="ex-btn ex-btn-weight ${currWt ? 'logged' : ''}" data-action="weight" data-ex="${escName}" data-card="${key}">${currWt ? '✓ wt' : '+ wt'}</button>` : ''}
+                ${isStrength ? `<button class="ex-btn ex-btn-1rm" data-action="orm" data-ex="${escName}">1RM</button>` : ''}
+                ${hasSwaps ? `<button class="ex-btn ex-btn-swap" data-action="swap" data-card="${key}" data-ei="${ei}" data-ex="${escName}" data-page="${key.split('-')[0]}" data-wi="${i}">swap</button>` : ''}
+              </div>
+            </div>
             <div class="ex-sets">${e.s}</div>
             <div class="ex-reps">${e.r}</div>
           </div>
-        `).join('')}
+        `}).join('')}
       </div>
       ${(w.cooldown||[]).length > 0 ? `
         <button class="wc-toggle" onclick="event.stopPropagation(); toggleWC('cooldown-${key}')">
