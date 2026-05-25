@@ -239,6 +239,52 @@
   .ex-sets { font-size: 13px; color: var(--muted); text-align: center; font-family: 'DM Mono', monospace; }
   .ex-reps { font-size: 12px; color: var(--accent); text-align: right; font-family: 'DM Mono', monospace; line-height: 1.3; }
 
+  /* WARM-UP / COOLDOWN */
+  .wc-section {
+    border-top: 1px solid var(--border);
+    padding: 0 16px 12px;
+    display: none;
+  }
+  .wc-section.open { display: block; }
+  .wc-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-top: 1px solid var(--border);
+    background: transparent;
+    width: 100%;
+    border-left: none; border-right: none; border-bottom: none;
+  }
+  .wc-toggle-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .wc-toggle-label.warmup-label { color: #fb923c; }
+  .wc-toggle-label.cooldown-label { color: #a78bfa; }
+  .wc-toggle-arrow {
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .wc-row {
+    display: grid;
+    grid-template-columns: 1fr 90px;
+    gap: 6px;
+    padding: 7px 0;
+    border-bottom: 1px solid #1a1a1a;
+    align-items: start;
+  }
+  .wc-row:last-child { border-bottom: none; }
+  .wc-name { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.3; }
+  .wc-note { font-size: 10px; color: var(--muted); margin-top: 2px; font-family: 'DM Mono', monospace; }
+  .wc-reps { font-size: 11px; text-align: right; font-family: 'DM Mono', monospace; line-height: 1.3; }
+  .wc-reps.warmup-reps { color: #fb923c; }
+  .wc-reps.cooldown-reps { color: #a78bfa; }
+
   /* TRACKER CARD */
   .tracker-card {
     background: var(--card);
@@ -659,95 +705,233 @@
 // ─── DATA ──────────────────────────────────────────────────────────────────
 const fullWeek = [
   { day:"Monday",   label:"Push",   type:"gym",    focus:"Chest · Shoulders · Triceps", dur:"35–45 min",
+    warmup:[
+      {n:"Arm Circles",             r:"30 sec each direction", note:"Loosen shoulder joint"},
+      {n:"Band Pull-Aparts",        r:"15 reps",               note:"Or use a towel — activate rear delts"},
+      {n:"Wall Shoulder Dislocates",r:"10 reps",               note:"Wide grip, slow and controlled"},
+      {n:"Light DB Press (50% weight)", r:"15 reps",           note:"Prime the chest before working sets"},
+      {n:"Chest Opener Stretch",    r:"30 sec hold",           note:"Hands clasped behind back, open chest"},
+    ],
     ex:[
       {n:"Barbell Bench Press",     s:"4", r:"6–8",    note:"Primary strength lift"},
       {n:"Dumbbell Incline Press",  s:"3", r:"10–12",  note:"Upper chest focus"},
       {n:"Cable Lateral Raises",    s:"3", r:"12–15",  note:"Slow & controlled"},
       {n:"Overhead Press (DB/BB)",  s:"3", r:"8–10",   note:""},
       {n:"Tricep Rope Pushdowns",   s:"3", r:"12–15",  note:"Superset optional"},
+    ],
+    cooldown:[
+      {n:"Doorway Chest Stretch",   r:"30–45 sec each side",   note:"Elbow at 90°, lean into doorframe"},
+      {n:"Cross-Body Shoulder Stretch", r:"30 sec each side",  note:"Pull arm across chest"},
+      {n:"Tricep Overhead Stretch", r:"30 sec each side",      note:"Elbow behind head"},
+      {n:"Neck Side Stretch",       r:"20 sec each side",      note:"Ear toward shoulder, gentle"},
     ]},
   { day:"Tuesday",  label:"Cardio", type:"cardio", focus:"Zone 2 · Endurance", dur:"30–40 min",
+    warmup:[
+      {n:"Leg Swings",              r:"10 each direction",     note:"Front-back and side-to-side"},
+      {n:"Hip Circles",             r:"10 each direction",     note:"Loosen hip joints before walking/jogging"},
+      {n:"Ankle Rolls",             r:"10 each foot",          note:"Prevent ankle stiffness"},
+      {n:"March in Place",          r:"60 sec",                note:"Get blood flowing before picking up pace"},
+    ],
     ex:[
       {n:"Brisk Walk or Light Jog", s:"1", r:"30–40 min", note:"Target HR: 130–145 bpm"},
       {n:"Or: Cycling",             s:"1", r:"30–40 min", note:"Steady moderate effort"},
+    ],
+    cooldown:[
+      {n:"Standing Quad Stretch",   r:"30 sec each leg",       note:"Hold onto wall if needed"},
+      {n:"Standing Calf Stretch",   r:"30 sec each leg",       note:"Heel on ground, lean forward"},
+      {n:"Hip Flexor Stretch",      r:"30 sec each side",      note:"Low lunge position"},
+      {n:"Seated Hamstring Stretch",r:"45 sec each leg",       note:"Reach toward toes, flat back"},
     ]},
   { day:"Wednesday",label:"Pull",   type:"gym",    focus:"Back · Biceps", dur:"35–45 min",
+    warmup:[
+      {n:"Cat-Cow",                 r:"10 reps",               note:"Mobilize the thoracic spine"},
+      {n:"Thoracic Rotations",      r:"10 each side",          note:"Seated or kneeling, rotate upper back"},
+      {n:"Band Rows or Cable Rows (light)", r:"15 reps",       note:"Activate lats before heavy sets"},
+      {n:"Dead Hang",               r:"20–30 sec",             note:"On pull-up bar — decompress spine, open lats"},
+      {n:"Shoulder Circles",        r:"30 sec each direction", note:"Full range of motion"},
+    ],
     ex:[
       {n:"Barbell / DB Rows",       s:"4", r:"6–8",    note:"Heaviest pull of the week"},
       {n:"Lat Pulldowns",           s:"3", r:"10–12",  note:"Full stretch at top"},
       {n:"Seated Cable Row",        s:"3", r:"10–12",  note:"Squeeze shoulder blades"},
       {n:"Face Pulls",              s:"3", r:"15",     note:"Rear delt health"},
       {n:"DB or BB Curls",          s:"3", r:"10–12",  note:""},
+    ],
+    cooldown:[
+      {n:"Child's Pose",            r:"45 sec",                note:"Arms extended, sit back into hips"},
+      {n:"Lat Stretch (doorframe)", r:"30 sec each side",      note:"Grab frame, lean away and sit back"},
+      {n:"Cross-Body Shoulder",     r:"30 sec each side",      note:"Targets rear delt and upper back"},
+      {n:"Bicep Wall Stretch",      r:"30 sec each arm",       note:"Palm on wall, rotate away slowly"},
     ]},
   { day:"Thursday", label:"Rest",   type:"rest",   focus:"Active Recovery", dur:"Optional",
+    warmup:[],
     ex:[
       {n:"Light Walk",              s:"—", r:"20–30 min", note:"Keep steps up"},
       {n:"Stretching / Mobility",   s:"—", r:"10–15 min", note:"Hips, chest, thoracic"},
+    ],
+    cooldown:[
+      {n:"Full Body Flow",          r:"10–15 min",             note:"Hip flexors, hamstrings, chest, lats — hold each 45 sec"},
+      {n:"Pigeon Pose",             r:"60 sec each side",      note:"Deep hip opener — great for desk workers"},
+      {n:"Supine Spinal Twist",     r:"30 sec each side",      note:"Lying on back, knee falls across body"},
     ]},
   { day:"Friday",   label:"Legs",   type:"gym",    focus:"Quads · Hamstrings · Glutes", dur:"35–45 min",
+    warmup:[
+      {n:"Bodyweight Squats",       r:"15 reps",               note:"Slow and deep — prime the pattern"},
+      {n:"Glute Bridges",           r:"15 reps",               note:"Activate glutes before heavy loading"},
+      {n:"Leg Swings",              r:"10 each direction",     note:"Front-back then side-to-side"},
+      {n:"Hip 90/90 Stretch",       r:"60 sec each side",      note:"On floor — open hip rotators"},
+      {n:"Walking Knee Hugs",       r:"10 steps",              note:"Pull knee to chest while walking"},
+    ],
     ex:[
       {n:"Barbell Squats",          s:"4", r:"6–8",    note:"King of all lifts"},
       {n:"Romanian Deadlift",       s:"3", r:"10–12",  note:"Hinge from hips"},
       {n:"Leg Press",               s:"3", r:"12–15",  note:"High foot = more glutes"},
       {n:"Walking Lunges",          s:"3", r:"12 each",note:"Or reverse lunges"},
       {n:"Calf Raises",             s:"3", r:"15–20",  note:""},
+    ],
+    cooldown:[
+      {n:"Standing Quad Stretch",   r:"45 sec each leg",       note:"Hold wall for balance"},
+      {n:"Seated Hamstring Stretch",r:"45 sec each leg",       note:"Flat back, reach toward toes"},
+      {n:"Pigeon Pose",             r:"60 sec each side",      note:"Best glute stretch there is"},
+      {n:"Calf Stretch on Step",    r:"30 sec each leg",       note:"Heel drop off a step edge"},
+      {n:"Hip Flexor Lunge Stretch",r:"30 sec each side",      note:"Back knee down, lean forward"},
     ]},
   { day:"Saturday", label:"HIIT",   type:"cardio", focus:"VO₂ Max · Stamina", dur:"25–35 min",
+    warmup:[
+      {n:"March in Place",          r:"60 sec",                note:"Get blood moving"},
+      {n:"High Knees (slow)",       r:"30 sec",                note:"Build up pace gradually"},
+      {n:"Leg Swings",              r:"10 each direction",     note:"Front-back and lateral"},
+      {n:"Arm Circles + Torso Rotations", r:"30 sec",          note:"Upper body prep for sprinting"},
+      {n:"Light Jog",               r:"3–4 min",               note:"Ramp up to sprint pace slowly"},
+    ],
     ex:[
-      {n:"Warm Up",                 s:"1", r:"5 min",           note:"Light jog or walk"},
       {n:"Sprint Intervals",        s:"8–10", r:"30s on / 60s off", note:"HR: 160–175 bpm"},
-      {n:"Cool Down",               s:"1", r:"5 min",           note:"Walk + stretch"},
+    ],
+    cooldown:[
+      {n:"Walk",                    r:"3–5 min",               note:"Bring HR below 120 before stretching"},
+      {n:"Standing Quad Stretch",   r:"30 sec each leg",       note:""},
+      {n:"Hip Flexor Stretch",      r:"30 sec each side",      note:"Low lunge"},
+      {n:"Calf Stretch",            r:"30 sec each leg",       note:"Heel on ground, lean forward"},
+      {n:"Deep Breathing",          r:"10 slow breaths",       note:"4 sec in, 6 sec out — lower HR"},
     ]},
   { day:"Sunday",   label:"Rest",   type:"rest",   focus:"Full Recovery", dur:"Full rest",
+    warmup:[],
     ex:[
       {n:"No structured workout",   s:"—", r:"—", note:"Sleep, nutrition, recovery"},
-    ]},
+    ],
+    cooldown:[]},
 ];
 
 const busyWeek = [
   { day:"Day 1", label:"Full Body A", type:"gym", focus:"Push-dominant", dur:"30–40 min",
+    warmup:[
+      {n:"Arm Circles",             r:"30 sec each direction", note:"Shoulder prep"},
+      {n:"Bodyweight Squats",       r:"10 reps",               note:"Prime lower body"},
+      {n:"Band Pull-Aparts",        r:"15 reps",               note:"Activate upper back"},
+      {n:"Light DB Press (50%)",    r:"15 reps",               note:"Warm up chest"},
+    ],
     ex:[
       {n:"Barbell Bench Press",  s:"3", r:"6–8",     note:"Primary lift"},
       {n:"DB Rows",              s:"3", r:"10–12",   note:"One per side"},
       {n:"Barbell Squats",       s:"3", r:"8–10",    note:""},
       {n:"DB Lateral Raises",    s:"2", r:"12–15",   note:""},
       {n:"Plank",                s:"3", r:"30–45 sec",note:""},
+    ],
+    cooldown:[
+      {n:"Chest Doorway Stretch",   r:"30 sec",                note:""},
+      {n:"Standing Quad Stretch",   r:"30 sec each leg",       note:""},
+      {n:"Seated Hamstring Stretch",r:"30 sec each leg",       note:""},
+      {n:"Hip Flexor Stretch",      r:"30 sec each side",      note:""},
     ]},
   { day:"Day 2", label:"Cardio",     type:"cardio", focus:"Zone 2 / Walk", dur:"30 min",
+    warmup:[
+      {n:"Leg Swings",              r:"10 each direction",     note:"Front-back and lateral"},
+      {n:"Ankle Rolls",             r:"10 each foot",          note:""},
+      {n:"March in Place",          r:"60 sec",                note:""},
+    ],
     ex:[
       {n:"Brisk Walk or Cycling",s:"1", r:"30 min",  note:"HR 130–145 bpm"},
+    ],
+    cooldown:[
+      {n:"Calf Stretch",            r:"30 sec each leg",       note:"Heel down, lean forward"},
+      {n:"Hip Flexor Stretch",      r:"30 sec each side",      note:""},
+      {n:"Quad Stretch",            r:"30 sec each leg",       note:""},
     ]},
   { day:"Day 3", label:"Full Body B", type:"home",  focus:"Pull-dominant", dur:"30–40 min",
+    warmup:[
+      {n:"Cat-Cow",                 r:"10 reps",               note:"Thoracic spine mobility"},
+      {n:"Glute Bridges",           r:"15 reps",               note:"Activate posterior chain"},
+      {n:"Shoulder Circles",        r:"30 sec each direction", note:""},
+      {n:"Light DB Row (50%)",      r:"15 reps",               note:"Prime the lats"},
+    ],
     ex:[
       {n:"DB Romanian Deadlift", s:"3", r:"10–12",   note:"Slow eccentric"},
       {n:"DB Incline Press",     s:"3", r:"10–12",   note:"Bench at home"},
       {n:"DB Bent Over Row",     s:"3", r:"10–12ea", note:""},
       {n:"DB Lunges",            s:"3", r:"12 each", note:""},
       {n:"DB Curl + OHP",        s:"2", r:"10 each", note:"Superset"},
+    ],
+    cooldown:[
+      {n:"Child's Pose",            r:"45 sec",                note:"Lat and lower back release"},
+      {n:"Pigeon Pose",             r:"45 sec each side",      note:"Glute and hip opener"},
+      {n:"Bicep Wall Stretch",      r:"30 sec each arm",       note:""},
+      {n:"Hamstring Stretch",       r:"30 sec each leg",       note:""},
     ]},
 ];
 
 const homeQuick = [
   { day:"Option A", label:"Quick Push", type:"home", focus:"Chest · Shoulders · Triceps", dur:"12–15 min",
+    warmup:[
+      {n:"Arm Circles",             r:"20 sec each direction", note:""},
+      {n:"Chest Opener (hands clasped behind back)", r:"20 sec", note:"Open chest before pressing"},
+      {n:"Push-Up (light, slow)",   r:"8 reps",                note:"Prime the movement pattern"},
+    ],
     ex:[
       {n:"DB Bench Press",       s:"3", r:"10–12",  note:""},
       {n:"DB Incline Press",     s:"2", r:"12",     note:""},
       {n:"DB Lateral Raises",    s:"2", r:"15",     note:""},
       {n:"Diamond Push-Ups",     s:"2", r:"Max",    note:""},
+    ],
+    cooldown:[
+      {n:"Doorway Chest Stretch",   r:"30 sec",                note:""},
+      {n:"Cross-Body Shoulder",     r:"20 sec each side",      note:""},
+      {n:"Tricep Overhead Stretch", r:"20 sec each side",      note:""},
     ]},
   { day:"Option B", label:"Quick Pull", type:"home", focus:"Back · Biceps", dur:"12–15 min",
+    warmup:[
+      {n:"Cat-Cow",                 r:"8 reps",                note:"Mobilize spine"},
+      {n:"Shoulder Circles",        r:"20 sec each direction", note:""},
+      {n:"Light DB Row (50%)",      r:"12 reps",               note:"Activate lats"},
+    ],
     ex:[
       {n:"DB Bent Over Row",     s:"3", r:"10–12ea",note:""},
       {n:"DB Reverse Fly",       s:"3", r:"12–15",  note:""},
       {n:"DB Bicep Curls",       s:"3", r:"12",     note:""},
       {n:"DB Hammer Curls",      s:"2", r:"12",     note:""},
+    ],
+    cooldown:[
+      {n:"Child's Pose",            r:"30 sec",                note:""},
+      {n:"Lat Doorframe Stretch",   r:"20 sec each side",      note:"Grab frame, sit back"},
+      {n:"Bicep Wall Stretch",      r:"20 sec each arm",       note:""},
     ]},
   { day:"Option C", label:"Quick Legs", type:"home", focus:"Quads · Hamstrings · Glutes", dur:"12–15 min",
+    warmup:[
+      {n:"Bodyweight Squats",       r:"12 reps",               note:"Slow and deep"},
+      {n:"Glute Bridges",           r:"12 reps",               note:"Activate glutes"},
+      {n:"Leg Swings",              r:"8 each direction",      note:"Front-back and lateral"},
+      {n:"Hip 90/90",               r:"30 sec each side",      note:"Open hips before loading"},
+    ],
     ex:[
       {n:"DB Goblet Squat",      s:"3", r:"15",     note:""},
       {n:"DB Romanian Deadlift", s:"3", r:"12",     note:"Slow eccentric"},
       {n:"DB Reverse Lunges",    s:"3", r:"12 each",note:""},
       {n:"Calf Raises",          s:"3", r:"20",     note:"BW or DB"},
+    ],
+    cooldown:[
+      {n:"Standing Quad Stretch",   r:"30 sec each leg",       note:""},
+      {n:"Pigeon Pose",             r:"45 sec each side",      note:"Best glute stretch"},
+      {n:"Seated Hamstring Stretch",r:"30 sec each leg",       note:""},
+      {n:"Calf Stretch",            r:"20 sec each leg",       note:""},
     ]},
 ];
 
@@ -811,6 +995,20 @@ function renderWorkouts(list, pageId) {
     const doneKey = `done-${wk}-${key}`;
     const isDone = !!state[doneKey];
 
+    const warmupRows = (w.warmup||[]).map(e => `
+      <div class="wc-row">
+        <div><div class="wc-name">${e.n}</div>${e.note ? `<div class="wc-note">${e.note}</div>` : ''}</div>
+        <div class="wc-reps warmup-reps">${e.r}</div>
+      </div>
+    `).join('');
+
+    const cooldownRows = (w.cooldown||[]).map(e => `
+      <div class="wc-row">
+        <div><div class="wc-name">${e.n}</div>${e.note ? `<div class="wc-note">${e.note}</div>` : ''}</div>
+        <div class="wc-reps cooldown-reps">${e.r}</div>
+      </div>
+    `).join('');
+
     card.innerHTML = `
       <div class="wcard-header" onclick="toggleCard('${key}')">
         <div class="wcard-check ${isDone ? 'done' : ''}" onclick="event.stopPropagation(); toggleDone('${doneKey}', '${key}')">
@@ -829,7 +1027,14 @@ function renderWorkouts(list, pageId) {
           <div class="wcard-arrow">${isExpanded ? '▲' : '▼'}</div>
         </div>
       </div>
-      <div class="exercises ${isExpanded ? 'open' : ''}">
+      ${(w.warmup||[]).length > 0 ? `
+        <button class="wc-toggle" onclick="event.stopPropagation(); toggleWC('warmup-${key}')">
+          <span class="wc-toggle-label warmup-label">🔥 Warm-Up</span>
+          <span class="wc-toggle-arrow" id="arrow-warmup-${key}">▼</span>
+        </button>
+        <div class="wc-section" id="warmup-${key}">${warmupRows}</div>
+      ` : ''}
+      <div class="exercises ${isExpanded ? 'open' : ''}" id="ex-${key}">
         <div class="ex-header">
           <span>Exercise</span><span>Sets</span><span>Reps / Time</span>
         </div>
@@ -841,6 +1046,13 @@ function renderWorkouts(list, pageId) {
           </div>
         `).join('')}
       </div>
+      ${(w.cooldown||[]).length > 0 ? `
+        <button class="wc-toggle" onclick="event.stopPropagation(); toggleWC('cooldown-${key}')">
+          <span class="wc-toggle-label cooldown-label">🧊 Cool-Down</span>
+          <span class="wc-toggle-arrow" id="arrow-cooldown-${key}">▼</span>
+        </button>
+        <div class="wc-section" id="cooldown-${key}">${cooldownRows}</div>
+      ` : ''}
     `;
     page.appendChild(card);
   });
@@ -849,11 +1061,19 @@ function renderWorkouts(list, pageId) {
 function toggleCard(key) {
   expandedCards[key] = !expandedCards[key];
   const card = document.getElementById('card-' + key);
-  const ex = card.querySelector('.exercises');
+  const ex = document.getElementById('ex-' + key);
   const arrow = card.querySelector('.wcard-arrow');
   card.classList.toggle('expanded', expandedCards[key]);
-  ex.classList.toggle('open', expandedCards[key]);
-  arrow.textContent = expandedCards[key] ? '▲' : '▼';
+  if (ex) ex.classList.toggle('open', expandedCards[key]);
+  if (arrow) arrow.textContent = expandedCards[key] ? '▲' : '▼';
+}
+
+function toggleWC(id) {
+  const el = document.getElementById(id);
+  const arrow = document.getElementById('arrow-' + id);
+  if (!el) return;
+  const isOpen = el.classList.toggle('open');
+  if (arrow) arrow.textContent = isOpen ? '▲' : '▼';
 }
 
 function toggleDone(doneKey, cardKey) {
