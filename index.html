@@ -528,6 +528,60 @@
     width: 8px; height: 8px; border-radius: 50%;
   }
 
+  /* WEIGHT LOG */
+  .wl-empty {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-align: center;
+    padding: 12px 0;
+    line-height: 1.6;
+  }
+  .wl-group { margin-bottom: 14px; }
+  .wl-group:last-child { margin-bottom: 0; }
+  .wl-ex-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .wl-current {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .wl-history {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .wl-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+  .wl-chip.latest {
+    color: var(--accent);
+    border-color: var(--accent)44;
+    background: var(--accent)11;
+  }
+  .wl-arrow {
+    font-size: 9px;
+    color: var(--muted2);
+  }
+  .wl-delta-up { color: #4ade80; }
+  .wl-delta-down { color: #f87171; }
+
   /* PROGRESS BAR */
   .progress-wrap {
     background: var(--card);
@@ -814,6 +868,11 @@
       </div>
     </div>
 
+    <div class="tracker-card">
+      <div class="tracker-title">🏋️ Lift Log — Weight History</div>
+      <div id="weightLog"></div>
+    </div>
+
     <div class="tips-card">
       <div class="tips-title" style="color:var(--accent)">⚡ Weekly Targets</div>
       <div class="tip-row"><div class="tip-key" style="color:var(--accent)">Protein</div><div class="tip-val">140–160g/day — prioritize post-workout</div></div>
@@ -821,6 +880,15 @@
       <div class="tip-row"><div class="tip-key" style="color:var(--accent)">Steps</div><div class="tip-val">10,000 steps on non-gym days</div></div>
       <div class="tip-row"><div class="tip-key" style="color:var(--accent)">Sleep</div><div class="tip-val">7–7.5 hrs minimum. Muscle is built here.</div></div>
       <div class="tip-row"><div class="tip-key" style="color:var(--accent)">Water</div><div class="tip-val">3+ liters/day on training days</div></div>
+    </div>
+
+    <div class="tips-card" style="border-color:#38bdf833;">
+      <div class="tips-title" style="color:var(--gym)">🩹 Low-Back Care</div>
+      <div class="tip-row"><div class="tip-key" style="color:var(--gym)">Defaults</div><div class="tip-val">Belt squat & hip thrust replace deadlifts/back squats — tap "swap" for barbell versions when your back feels good</div></div>
+      <div class="tip-row"><div class="tip-key" style="color:var(--gym)">Core</div><div class="tip-val">Dead bugs, bird dogs, side planks build anti-movement strength that protects your spine</div></div>
+      <div class="tip-row"><div class="tip-key" style="color:var(--gym)">Warm-up</div><div class="tip-val">Never skip cat-cow & glute activation — cold low back is where injuries happen</div></div>
+      <div class="tip-row"><div class="tip-key" style="color:var(--gym)">Rule</div><div class="tip-val">Sharp pain = stop. Dull stiffness = ease off weight, don't push through</div></div>
+      <div class="tip-row"><div class="tip-key" style="color:var(--gym)">Next step</div><div class="tip-val">A few PT sessions for scoliosis-specific work is high-value when you're ready</div></div>
     </div>
 
     <div class="tips-card" style="border-color:#a78bfa33;">
@@ -954,7 +1022,7 @@ const fullWeek = [
       {n:"Barbell Bench Press",     s:"4", r:"6–8",    note:"Primary strength lift"},
       {n:"Dumbbell Incline Press",  s:"3", r:"10–12",  note:"Upper chest focus"},
       {n:"Cable Lateral Raises",    s:"3", r:"12–15",  note:"Slow & controlled"},
-      {n:"Overhead Press (DB/BB)",  s:"3", r:"8–10",   note:""},
+      {n:"Overhead Press (DB/BB)",  s:"3", r:"8–10",   note:"Do seated with back support to spare the low back"},
       {n:"Tricep Rope Pushdowns",   s:"3", r:"12–15",  note:"Superset optional"},
     ],
     cooldown:[
@@ -989,9 +1057,9 @@ const fullWeek = [
       {n:"Shoulder Circles",        r:"30 sec each direction", note:"Full range of motion"},
     ],
     ex:[
-      {n:"Barbell / DB Rows",       s:"4", r:"6–8",    note:"Heaviest pull of the week"},
+      {n:"Chest-Supported Row",     s:"4", r:"8–10",   note:"Back-friendly — pad removes low-back strain (swap for BB row)"},
       {n:"Lat Pulldowns",           s:"3", r:"10–12",  note:"Full stretch at top"},
-      {n:"Seated Cable Row",        s:"3", r:"10–12",  note:"Squeeze shoulder blades"},
+      {n:"Seated Cable Row",        s:"3", r:"10–12",  note:"Squeeze shoulder blades, upright torso"},
       {n:"Face Pulls",              s:"3", r:"15",     note:"Rear delt health"},
       {n:"DB or BB Curls",          s:"3", r:"10–12",  note:""},
     ],
@@ -1014,25 +1082,26 @@ const fullWeek = [
     ]},
   { day:"Friday",   label:"Legs",   type:"gym",    focus:"Quads · Hamstrings · Glutes", dur:"35–45 min",
     warmup:[
-      {n:"Bodyweight Squats",       r:"15 reps",               note:"Slow and deep — prime the pattern"},
-      {n:"Glute Bridges",           r:"15 reps",               note:"Activate glutes before heavy loading"},
-      {n:"Leg Swings",              r:"10 each direction",     note:"Front-back then side-to-side"},
+      {n:"Cat-Cow",                 r:"10 reps",               note:"Mobilize spine — key for low back"},
+      {n:"Glute Bridges",           r:"15 reps",               note:"Wake up glutes so they share load with the back"},
+      {n:"Bird Dog",                r:"8 each side",           note:"Slow — anti-rotation core activation"},
       {n:"Hip 90/90 Stretch",       r:"60 sec each side",      note:"On floor — open hip rotators"},
-      {n:"Walking Knee Hugs",       r:"10 steps",              note:"Pull knee to chest while walking"},
+      {n:"Bodyweight Squats",       r:"15 reps",               note:"Prime the pattern, stay upright"},
     ],
     ex:[
-      {n:"Barbell Squats",          s:"4", r:"6–8",    note:"King of all lifts"},
-      {n:"Romanian Deadlift",       s:"3", r:"10–12",  note:"Hinge from hips"},
-      {n:"Leg Press",               s:"3", r:"12–15",  note:"High foot = more glutes"},
-      {n:"Walking Lunges",          s:"3", r:"12 each",note:"Or reverse lunges"},
+      {n:"Belt Squat",              s:"4", r:"8–10",   note:"Back-friendly — loads legs with zero spinal compression"},
+      {n:"Hip Thrust",              s:"3", r:"10–12",  note:"Glutes & hamstrings, spine supported (swap for RDL)"},
+      {n:"Leg Press",               s:"3", r:"12–15",  note:"Don't let lower back round off pad at bottom"},
+      {n:"Reverse Lunges",          s:"3", r:"12 each",note:"Easier on knees & back than walking lunges"},
+      {n:"Dead Bug",                s:"3", r:"10 each",note:"Anti-extension core — protects the low back"},
       {n:"Calf Raises",             s:"3", r:"15–20",  note:""},
     ],
     cooldown:[
-      {n:"Standing Quad Stretch",   r:"45 sec each leg",       note:"Hold wall for balance"},
-      {n:"Seated Hamstring Stretch",r:"45 sec each leg",       note:"Flat back, reach toward toes"},
+      {n:"Child's Pose",            r:"45 sec",                note:"Gentle low-back decompression"},
+      {n:"Supine Spinal Twist",     r:"30 sec each side",      note:"Lying twist — releases lower back"},
       {n:"Pigeon Pose",             r:"60 sec each side",      note:"Best glute stretch there is"},
-      {n:"Calf Stretch on Step",    r:"30 sec each leg",       note:"Heel drop off a step edge"},
-      {n:"Hip Flexor Lunge Stretch",r:"30 sec each side",      note:"Back knee down, lean forward"},
+      {n:"Standing Quad Stretch",   r:"45 sec each leg",       note:"Hold wall for balance"},
+      {n:"Knees-to-Chest",          r:"30 sec",                note:"Both knees hugged in — soothes low back"},
     ]},
   { day:"Saturday", label:"HIIT",   type:"cardio", focus:"VO₂ Max · Stamina", dur:"25–35 min",
     warmup:[
@@ -1070,10 +1139,10 @@ const busyWeek = [
     ],
     ex:[
       {n:"Barbell Bench Press",  s:"3", r:"6–8",     note:"Primary lift"},
-      {n:"DB Rows",              s:"3", r:"10–12",   note:"One per side"},
-      {n:"Barbell Squats",       s:"3", r:"8–10",    note:""},
+      {n:"Chest-Supported Row",  s:"3", r:"10–12",   note:"Back-friendly (swap for DB row)"},
+      {n:"Belt Squat",           s:"3", r:"8–10",    note:"No spinal load (swap for goblet/barbell)"},
       {n:"DB Lateral Raises",    s:"2", r:"12–15",   note:""},
-      {n:"Plank",                s:"3", r:"30–45 sec",note:""},
+      {n:"Side Plank",           s:"3", r:"20–30 sec ea",note:"Anti-lateral-flexion — great for scoliosis"},
     ],
     cooldown:[
       {n:"Chest Doorway Stretch",   r:"30 sec",                note:""},
@@ -1103,11 +1172,11 @@ const busyWeek = [
       {n:"Light DB Row (50%)",      r:"15 reps",               note:"Prime the lats"},
     ],
     ex:[
-      {n:"DB Romanian Deadlift", s:"3", r:"10–12",   note:"Slow eccentric"},
+      {n:"Hip Thrust",           s:"3", r:"10–12",   note:"Back-friendly hinge (swap for DB RDL)"},
       {n:"DB Incline Press",     s:"3", r:"10–12",   note:"Bench at home"},
-      {n:"DB Bent Over Row",     s:"3", r:"10–12ea", note:""},
-      {n:"DB Lunges",            s:"3", r:"12 each", note:""},
-      {n:"DB Curl + OHP",        s:"2", r:"10 each", note:"Superset"},
+      {n:"Chest-Supported Row",  s:"3", r:"10–12",   note:"Or DB row with chest on incline bench"},
+      {n:"DB Reverse Lunges",    s:"3", r:"12 each", note:"Easier on back than forward lunges"},
+      {n:"DB Curl + OHP",        s:"2", r:"10 each", note:"Superset — press seated"},
     ],
     cooldown:[
       {n:"Child's Pose",            r:"45 sec",                note:"Lat and lower back release"},
@@ -1160,9 +1229,10 @@ const homeQuick = [
       {n:"Hip 90/90",               r:"30 sec each side",      note:"Open hips before loading"},
     ],
     ex:[
-      {n:"DB Goblet Squat",      s:"3", r:"15",     note:""},
-      {n:"DB Romanian Deadlift", s:"3", r:"12",     note:"Slow eccentric"},
-      {n:"DB Reverse Lunges",    s:"3", r:"12 each",note:""},
+      {n:"DB Goblet Squat",      s:"3", r:"15",     note:"Front-loaded = upright torso, back-friendly"},
+      {n:"DB Glute Bridge",      s:"3", r:"15",     note:"Floor-based hinge — spine supported (swap for RDL)"},
+      {n:"DB Reverse Lunges",    s:"3", r:"12 each",note:"Easier on back than forward lunges"},
+      {n:"Bird Dog",             s:"3", r:"8 each", note:"Anti-rotation core for spine stability"},
       {n:"Calf Raises",          s:"3", r:"20",     note:"BW or DB"},
     ],
     cooldown:[
@@ -1204,24 +1274,26 @@ const swaps = {
   "Barbell Bench Press":    [{n:"DB Bench Press",       note:"Same movement, unilateral stability"},{n:"Push-Up (weighted)",   note:"Add plate on back for resistance"},{n:"Machine Chest Press",  note:"Good for isolating, less stabilizer demand"}],
   "Dumbbell Incline Press": [{n:"Incline Barbell Press", note:"More stable, can go heavier"},{n:"Cable Incline Fly",     note:"Constant tension on upper chest"},{n:"Incline Push-Up",       note:"BW version, easy to scale"}],
   "Cable Lateral Raises":   [{n:"DB Lateral Raises",    note:"Classic dumbbell version"},{n:"Band Lateral Raises",   note:"Good at home, constant tension"},{n:"Machine Lateral Raise", note:"Isolates well, easier to control"}],
-  "Overhead Press (DB/BB)": [{n:"Arnold Press",          note:"More shoulder rotation, fuller range"},{n:"Seated DB Press",       note:"More stable base"},{n:"Landmine Press",        note:"Easier on shoulders, joint-friendly"}],
+  "Overhead Press (DB/BB)": [{n:"Seated DB Press",       note:"⭐ Back-friendly — supported spine"},{n:"Arnold Press",          note:"More shoulder rotation (do seated)"},{n:"Landmine Press",        note:"Easier on shoulders & back, angled press"}],
   "Tricep Rope Pushdowns":  [{n:"Overhead Tricep Extension", note:"Long head emphasis"},{n:"Skull Crushers (EZ bar)", note:"Heavy tricep mass builder"},{n:"Diamond Push-Ups",      note:"BW option, no equipment"}],
-  "Barbell / DB Rows":      [{n:"T-Bar Row",             note:"Similar movement, great back builder"},{n:"Chest-Supported Row",   note:"Removes lower back stress"},{n:"Cable Row (wide grip)", note:"Constant tension throughout"}],
+  "Chest-Supported Row":    [{n:"Barbell Bent-Over Row", note:"⚠️ Heavier but loads low back — go lighter"},{n:"T-Bar Row (chest pad)", note:"Great back builder, supported"},{n:"Cable Row (wide grip)", note:"Constant tension, upright torso"}],
   "Lat Pulldowns":          [{n:"Pull-Ups / Assisted",   note:"Best lat builder if you can do them"},{n:"Straight-Arm Pulldown", note:"Great lat isolation"},{n:"Single-Arm Cable Row",  note:"Allows full range unilaterally"}],
-  "Seated Cable Row":       [{n:"DB Bent Over Row",      note:"Free weight version, more core demand"},{n:"Machine Row",           note:"Easy to load heavy safely"},{n:"Resistance Band Row",  note:"Home-friendly option"}],
+  "Seated Cable Row":       [{n:"Chest-Supported Row",   note:"Pad support, back-friendly"},{n:"Machine Row",           note:"Easy to load heavy safely"},{n:"Resistance Band Row",  note:"Home-friendly option"}],
   "Face Pulls":             [{n:"Band Pull-Aparts",      note:"Great rear delt with resistance band"},{n:"Reverse Pec Deck",      note:"Machine version, easy to isolate"},{n:"DB Reverse Fly",        note:"Dumbbell version, good with bench"}],
   "DB or BB Curls":         [{n:"Preacher Curls",        note:"Removes momentum, strict form"},{n:"Cable Curls",           note:"Constant tension throughout"},{n:"Concentration Curls",   note:"Peak contraction focus"}],
-  "Barbell Squats":         [{n:"Goblet Squat",          note:"Great for mobility, DB at chest"},{n:"Hack Squat",            note:"Machine version, quad emphasis"},{n:"Bulgarian Split Squat", note:"Unilateral, brutal but effective"}],
-  "Romanian Deadlift":      [{n:"Nordic Hamstring Curl", note:"Bodyweight, excellent eccentric"},{n:"Good Mornings",         note:"Hip hinge, similar muscles"},{n:"Swiss Ball Hamstring Curl", note:"Home-friendly, no equipment needed"}],
-  "Leg Press":              [{n:"Hack Squat Machine",    note:"Similar quad emphasis"},{n:"Step-Ups (DB)",          note:"Unilateral, great for balance"},{n:"Wall Sit",               note:"Isometric, bodyweight option"}],
-  "Walking Lunges":         [{n:"Reverse Lunges",        note:"Easier on knees, same muscles"},{n:"Bulgarian Split Squat", note:"More challenging unilateral option"},{n:"Step-Ups",              note:"Same muscle groups, lower knee stress"}],
+  "Belt Squat":             [{n:"Goblet Squat",          note:"Front-loaded, upright torso, back-friendly"},{n:"Hack Squat",            note:"Machine, back supported by pad"},{n:"Barbell Squat (light)", note:"⚠️ Axial load — keep weight moderate, brace hard"}],
+  "Hip Thrust":             [{n:"Glute Bridge",          note:"Floor version, even lower back demand"},{n:"Romanian Deadlift (light)", note:"⚠️ Loads low back — light weight, hinge carefully"},{n:"Cable Pull-Through",    note:"Hip hinge with spine-neutral load"}],
+  "Leg Press":              [{n:"Hack Squat Machine",    note:"Similar quad emphasis, supported"},{n:"Step-Ups (DB)",          note:"Unilateral, great for balance"},{n:"Wall Sit",               note:"Isometric, bodyweight option"}],
+  "Reverse Lunges":         [{n:"Walking Lunges",        note:"More dynamic, more glutes"},{n:"Bulgarian Split Squat", note:"More challenging unilateral option"},{n:"Step-Ups",              note:"Same muscles, low knee stress"}],
+  "Dead Bug":               [{n:"Bird Dog",              note:"Anti-rotation alternative"},{n:"Side Plank",            note:"Anti-lateral-flexion, great for scoliosis"},{n:"Pallof Press",          note:"Cable/band anti-rotation, excellent"}],
   "Calf Raises":            [{n:"Seated Calf Raise",     note:"Targets soleus more than standing"},{n:"Single-Leg Calf Raise", note:"More challenging bodyweight option"},{n:"Jump Rope",             note:"Cardio + calf endurance combo"}],
   "DB Bench Press":         [{n:"Barbell Bench Press",   note:"More stable, can load heavier"},{n:"Push-Up",               note:"Bodyweight fallback"},{n:"Machine Chest Press",  note:"Good isolation option"}],
-  "DB Romanian Deadlift":   [{n:"Romanian Deadlift (BB)", note:"Barbell version, more loading"},{n:"Good Mornings",         note:"Similar hip hinge pattern"},{n:"Nordic Hamstring Curl", note:"Eccentric hamstring focus"}],
   "DB Incline Press":       [{n:"Incline Push-Up",       note:"Bodyweight version"},{n:"Incline BB Press",       note:"Heavier loading option"},{n:"Cable Incline Fly",     note:"Constant tension"}],
-  "DB Bent Over Row":       [{n:"Chest-Supported DB Row",note:"Removes lower back fatigue"},{n:"Single-Arm Cable Row",  note:"Constant tension"},{n:"Resistance Band Row",   note:"Home option"}],
-  "DB Goblet Squat":        [{n:"Bodyweight Squat",      note:"No equipment needed"},{n:"Barbell Back Squat",    note:"Heavier loading if at gym"},{n:"Wall Sit",              note:"Isometric alternative"}],
+  "DB Goblet Squat":        [{n:"Bodyweight Squat",      note:"No equipment needed"},{n:"Belt Squat",            note:"Zero spinal load if at gym"},{n:"Wall Sit",              note:"Isometric alternative"}],
+  "DB Glute Bridge":        [{n:"Hip Thrust",           note:"Shoulders on bench, fuller range"},{n:"Single-Leg Glute Bridge", note:"Unilateral, no weight needed"},{n:"Cable Pull-Through",    note:"Hip hinge, spine-neutral"}],
   "DB Reverse Lunges":      [{n:"Walking Lunges",        note:"More dynamic, more glutes"},{n:"Bulgarian Split Squat", note:"More challenging"},{n:"Step-Ups",              note:"Lower knee stress option"}],
+  "Side Plank":             [{n:"Bird Dog",              note:"Anti-rotation core"},{n:"Dead Bug",              note:"Anti-extension core"},{n:"Pallof Press",          note:"Anti-rotation with band/cable"}],
+  "Bird Dog":               [{n:"Dead Bug",              note:"Anti-extension alternative"},{n:"Side Plank",            note:"Anti-lateral-flexion"},{n:"Pallof Press",          note:"Anti-rotation, band or cable"}],
 };
 
 // Active swaps for this session (key = cardKey-exIndex, value = swapped exercise)
@@ -1262,6 +1334,7 @@ function openWeightModal(exName, cardKey) {
 function saveWeight() {
   if (!weightContext) { closeWeightModal(); return; }
   const val = parseFloat(document.getElementById('weightInput').value);
+  const pageId = weightContext.cardKey.split('-')[0];
   if (!isNaN(val) && val > 0) {
     const wk = getWeekKey();
     state[`wt-${wk}-${weightContext.exName}`] = val;
@@ -1269,10 +1342,10 @@ function saveWeight() {
   }
   closeWeightModal();
   // Re-render to show updated weight
-  const pageId = weightContext.cardKey.split('-')[0];
   if (pageId === 'full') renderWorkouts(fullWeek, 'full');
   if (pageId === 'busy') renderWorkouts(busyWeek, 'busy');
   if (pageId === 'home') renderWorkouts(homeQuick, 'home');
+  renderWeightLog();
 }
 
 function closeWeightModal() {
@@ -1565,6 +1638,82 @@ function renderTracker() {
     `;
     grid.appendChild(col);
   });
+
+  renderWeightLog();
+}
+
+// Parse the ISO week key back into a sortable number and a short label
+function weekKeyToLabel(wkKey) {
+  // wkKey format: 2026-W19
+  const m = wkKey.match(/^(\d{4})-W(\d{2})$/);
+  if (!m) return wkKey;
+  return `W${parseInt(m[2])}`;
+}
+function weekKeySortVal(wkKey) {
+  const m = wkKey.match(/^(\d{4})-W(\d{2})$/);
+  if (!m) return 0;
+  return parseInt(m[1]) * 100 + parseInt(m[2]);
+}
+
+function renderWeightLog() {
+  const container = document.getElementById('weightLog');
+  if (!container) return;
+
+  // Gather all weight entries: keys like wt-2026-W19-Exercise Name
+  const byExercise = {};
+  Object.keys(state).forEach(key => {
+    const m = key.match(/^wt-(\d{4}-W\d{2})-(.+)$/);
+    if (!m) return;
+    const wkKey = m[1];
+    const exName = m[2];
+    const val = state[key];
+    if (val == null || val === '') return;
+    if (!byExercise[exName]) byExercise[exName] = [];
+    byExercise[exName].push({ wk: wkKey, val: parseFloat(val), sort: weekKeySortVal(wkKey) });
+  });
+
+  const exNames = Object.keys(byExercise);
+  if (exNames.length === 0) {
+    container.innerHTML = `<div class="wl-empty">No lifts logged yet.<br>Tap "+ wt" on any exercise to start tracking your weights here.</div>`;
+    return;
+  }
+
+  // Sort exercises by most recent activity
+  exNames.sort((a, b) => {
+    const maxA = Math.max(...byExercise[a].map(e => e.sort));
+    const maxB = Math.max(...byExercise[b].map(e => e.sort));
+    return maxB - maxA;
+  });
+
+  let html = '';
+  exNames.forEach(exName => {
+    const entries = byExercise[exName].sort((a, b) => b.sort - a.sort); // newest first
+    const latest = entries[0];
+    // Build history chips (show up to 6 most recent, oldest→newest left to right)
+    const shown = entries.slice(0, 6).reverse();
+    let chips = '';
+    shown.forEach((e, i) => {
+      const isLatest = e.sort === latest.sort;
+      if (i > 0) {
+        const prev = shown[i-1];
+        if (e.val > prev.val) chips += `<span class="wl-arrow wl-delta-up">▲</span>`;
+        else if (e.val < prev.val) chips += `<span class="wl-arrow wl-delta-down">▼</span>`;
+        else chips += `<span class="wl-arrow">=</span>`;
+      }
+      chips += `<span class="wl-chip ${isLatest ? 'latest' : ''}">${weekKeyToLabel(e.wk)}: ${e.val}</span>`;
+    });
+
+    html += `
+      <div class="wl-group">
+        <div class="wl-ex-name">
+          <span>${escapeHtml(exName)}</span>
+          <span class="wl-current">${latest.val} lbs</span>
+        </div>
+        <div class="wl-history">${chips}</div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
 }
 
 function updateProgress() {
